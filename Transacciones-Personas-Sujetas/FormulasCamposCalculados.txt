@@ -1,0 +1,22 @@
+--RUT
+
+CASE WHEN [TRAN_pasaportefinal] IS  NULL
+    THEN [TRAN_rutfinal]
+    ELSE [TRAN_pasaportefinal]
+END
+
+--Operación
+
+CASE WHEN [TRAN_compraventa]  = 'C'
+    THEN 'COMPRA'
+    WHEN [TRAN_compraventa]  = 'V'
+    THEN 'VENTA'
+    ELSE ''
+END
+
+--Identificador Reporte
+
+CASE WHEN [TABLE0__NPASAPORTE_1] IS NULL
+    THEN [TABLE0__RUT_1]
+    ELSE [TABLE0__NPASAPORTE_1]
+END
