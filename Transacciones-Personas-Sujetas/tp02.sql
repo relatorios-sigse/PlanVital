@@ -79,13 +79,13 @@ SELECT
     LEFT JOIN
         (
             SELECT
-                CASE 
+                DISTINCT CASE 
                     WHEN CONINT.NPASAPORTE IS NULL THEN TRIM(CONINT.RUT) 
                     ELSE TRIM(CONINT.NPASAPORTE) 
                 END IDENTIFICADOR,
-                CONINT.NOMBRES NOMBRE,
-                CONINT.APELLIDOP APELLIDO_PATERNO,
-                CONINT.APELLIDOM APELLIDO_MATERNO 
+                trim(CONINT.NOMBRES) NOMBRE,
+                trim(CONINT.APELLIDOP) APELLIDO_PATERNO,
+                trim(CONINT.APELLIDOM) APELLIDO_MATERNO 
             FROM
                 WFPROCESS WFP  
             LEFT OUTER JOIN

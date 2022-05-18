@@ -120,9 +120,9 @@ LEFT JOIN
                 WHEN CONINT.NPASAPORTE IS NULL THEN TRIM(CONINT.RUT) 
                 ELSE TRIM(CONINT.NPASAPORTE) 
             END IDENTIFICADOR,
-            trim(regexp_replace(CONINT.NOMBRES, '\s+', '', 'g')) NOMBRE,
-            trim(regexp_replace(CONINT.APELLIDOP, '\s+', '', 'g')) APELLIDO_PATERNO,
-            trim(regexp_replace(CONINT.APELLIDOM, '\s+', '', 'g')) APELLIDO_MATERNO 
+            trim(CONINT.NOMBRES) NOMBRE,
+            trim(CONINT.APELLIDOP) APELLIDO_PATERNO,
+            trim(CONINT.APELLIDOM) APELLIDO_MATERNO 
         FROM
             WFPROCESS WFP  
         LEFT OUTER JOIN
