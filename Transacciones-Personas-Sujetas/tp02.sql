@@ -7,11 +7,14 @@ SELECT
                 ELSE NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.NOMBRE 
             END 
         END APELLIDOS_NOMBRES,
+        REPLACE(TRANTP02.Rut_Nacional, '-','') Rut_Nacional_SinGuion,
+        REPLACE(TRANTP02.Rut_Extranjero, '-','') Rut_Extranjero_SinGuion,
+        REPLACE(TRANTP02.Identificador, '-','') Identificador_SinGuion,
         TRANTP02.* 
     FROM
         (SELECT
             WFP.idprocess AS Id_Workflow,
-            INST.tipoinst AS Tipo_de_Instrumento,
+            UPPER(INST.tipoinst) AS Tipo_de_Instrumento,
             TP02.serie AS Serie_del_Instrumento,
             TP02.unidades AS Unidades,
             TP02.precunit AS Precio_Unitario,
@@ -23,10 +26,10 @@ SELECT
             END AS Tipo_de_Movimiento,
             TP02.tir AS TIR,
             TP02.plazoinstrument AS Plazo_del_Instrumento,
-            MONE.descmone AS Moneda_de_Emision,
+            MONE.codimone AS Moneda_de_Emision,
             TP02.precunitmone AS Precio_Unitario_Moneda_Emision,
             TP02.fechatransaccio AS Fecha_de_Transaccion,
-            TO_CHAR(TP02.fechatransaccio, 'YYYY-MM-DD') AS Fecha_de_Transaccion_Mod,
+            TO_CHAR(TP02.fechatransaccio, 'YYYYMMDD') AS Fecha_de_Transaccion_Mod,
             TP02.intermediario AS Intermediario,
             TP02.titugara AS Titulo_Garantizado_S_N,
             TP02.nombreemisor AS Administrador_de_cartera,

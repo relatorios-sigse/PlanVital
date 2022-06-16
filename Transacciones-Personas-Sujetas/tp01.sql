@@ -7,14 +7,17 @@ SELECT
                 ELSE NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.NOMBRE 
             END 
         END APELLIDOS_NOMBRES,
+        REPLACE(TRANTP01.Rut_Nacional, '-','') Rut_Nacional_SinGuion,
+        REPLACE(TRANTP01.Rut_Extranjero, '-','') Rut_Extranjero_SinGuion,
+        REPLACE(TRANTP01.Identificador, '-','') Identificador_SinGuion,
         TRANTP01.* 
     FROM
         (SELECT
             WFP.idprocess AS Id_Workflow,
             TP01.fechatransaccio AS Fecha_de_Transaccion,
-		 	TO_CHAR(TP01.fechatransaccio, 'YYYY-MM-DD') AS Fecha_de_Transaccion_Mod,
+		 	TO_CHAR(TP01.fechatransaccio, 'YYYYMMDD') AS Fecha_de_Transaccion_Mod,
             TP01.foliotransaccio AS Folio_de_Transaccion,
-            INST.tipoinst  AS Tipo_de_Instrumento,
+            UPPER(INST.tipoinst)  AS Tipo_de_Instrumento,
             TP01.nemotecnico AS Nemotecnico,
             TP01.unidades AS Unidades,
             TP01.precunit AS Precio_Unitario,
@@ -64,9 +67,9 @@ SELECT
         SELECT
             WFP.idprocess AS Id_Workflow,
             GRID.fechatransaccio AS Fecha_de_Transaccion,
-		 	TO_CHAR(GRID.fechatransaccio, 'YYYY-MM-DD') AS Fecha_de_Transaccion_Mod,
+		 	TO_CHAR(GRID.fechatransaccio, 'YYYYMMDD') AS Fecha_de_Transaccion_Mod,
             GRID.foliotransaccio AS Folio_de_Transaccion,
-            INST.tipoinstrumento  AS Tipo_de_Instrumento,
+            UPPER(INST.tipoinstrumento)  AS Tipo_de_Instrumento,
             GRID.nemotecnico AS Nemotecnico,
             GRID.unidades AS Unidades,
             GRID.preciounitario3 AS Precio_Unitario,

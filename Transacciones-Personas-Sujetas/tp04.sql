@@ -7,12 +7,15 @@ SELECT
                 ELSE NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.NOMBRE              
             END          
         END APELLIDOS_NOMBRES,
+        REPLACE(TRANTP04.Rut_Nacional, '-','') Rut_Nacional_SinGuion,
+        REPLACE(TRANTP04.Rut_Extranjero, '-','') Rut_Extranjero_SinGuion,
+        REPLACE(TRANTP04.Identificador, '-','') Identificador_SinGuion,
         TRANTP04.*      
     FROM
         (SELECT
             WFP.idprocess AS Id_Workflow,
             TP04.foliotransaccio AS Folio_de_Transaccion,
-            INST.tipoinst AS Tipo_de_Instrumento,
+            UPPER(INST.tipoinst) AS Tipo_de_Instrumento,
             TP04.instobje AS Instrumento_Objeto,
             TP04.nemotecnico AS Nemotecnico_del_Instrumento,
             TP04.precejercont AS Precio_de_Ejercicio_Contrato,
@@ -33,7 +36,7 @@ SELECT
             TP04.tipoopci AS Tipo_de_Opción,
             TP04.fechatransaccio AS Fecha_de_Transaccion,
             TO_CHAR(TP04.fechatransaccio,
-            'YYYY-MM-DD') AS Fecha_de_Transaccion_Mod,
+            'YYYYMMDD') AS Fecha_de_Transaccion_Mod,
             TRIM(regexp_replace(TP04.nombrefinal,
             '\s+',
             ' ',

@@ -7,6 +7,9 @@ SELECT
                 ELSE NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.NOMBRE 
             END 
         END APELLIDOS_NOMBRES,
+        REPLACE(TRANTP07.Rut_Nacional, '-','') Rut_Nacional_SinGuion,
+        REPLACE(TRANTP07.Rut_Extranjero, '-','') Rut_Extranjero_SinGuion,
+        REPLACE(TRANTP07.Identificador, '-','') Identificador_SinGuion,
         TRANTP07.* 
     FROM
         (SELECT
@@ -14,10 +17,10 @@ SELECT
             TP07.unidades AS Unidades,
             TP07.tipocamb AS Tipo_de_Cambio,
             TP07.valotota AS Valor_total,
-            MONCOM.descmone AS Moneda_de_Compra,
-            MONVEN.descmone AS Moneda_de_Venta,
+            MONCOM.codimone AS Moneda_de_Compra,
+            MONVEN.codimone AS Moneda_de_Venta,
             TP07.fechatransaccio AS Fecha_de_Transacción,
-			TO_CHAR(TP07.fechatransaccio,'YYYY-MM-DD') AS Fecha_de_Transaccion_Mod,
+            TO_CHAR(TP07.fechatransaccio,'YYYYMMDD') AS Fecha_de_Transaccion_Mod,
             TP07.contraparte AS Contraparte,
             TRIM(regexp_replace(TP07.nombrefinal,
             '\s+',
