@@ -16,6 +16,9 @@ trim(regexp_replace(GRID.nombrefinal, '\s+', ' ', 'g')) TRAN_nombrefinal.
 22-07-2021. Andrés Del Río. Incidente. Cliente reporta que nombre FEDERICO MARIA MOROSI está siendo mostrado en reporte como
 MARIA MOROSI FEDERICO, cuando debería ser MOROSI FEDERICO MARIA. Para resolverlo, se consulta los datos de los antecedentes, en donde el nombre, apellido paterno
 y apellido materno están ya separados
+22-07-2022. Andrés Del Río. Incidente. Cliente reporta que las transacciones de RODRIGO CRISOSTOMO están duplicadas.
+Cuando el usuario tiene más de una alta (debido a un cambio de área), la query hacía el distinct de los registros. Además, uno de los apellidos
+de este usuario en una de las altas aparece con Ñ y en otra con N, evitando que el DISTINCT incluído para resolver la situación no sea suficiente.
 **/
 CASE  WHEN TMP.TRAN_usuariotransaccion = 'SOCIEDAD' OR TMP.TRAN_usuariotransaccion = 'CONYUGE' THEN TRAN_nombrefinal ELSE  CASE WHEN NOMBAPELL.APELLIDO_MATERNO <> '' THEN NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.APELLIDO_MATERNO || ' ' || NOMBAPELL.NOMBRE ELSE NOMBAPELL.APELLIDO_PATERNO || ' ' || NOMBAPELL.NOMBRE END END APELLIDOS_NOMBRES,
 TMP.* 
@@ -1277,10 +1280,10 @@ WHERE
 ) TEMPTB0
 ) TEMPTB1 ) TMP 
 LEFT JOIN
-(SELECT CASE WHEN CONINT.NPASAPORTE IS NULL THEN TRIM(CONINT.RUT) ELSE TRIM(CONINT.NPASAPORTE) END IDENTIFICADOR, 
-    CONINT.NOMBRES NOMBRE, 
-    CONINT.APELLIDOP APELLIDO_PATERNO, 
-    CONINT.APELLIDOM APELLIDO_MATERNO
+(SELECT DISTINCT CASE WHEN CONINT.NPASAPORTE IS NULL THEN TRIM(CONINT.RUT) ELSE TRIM(CONINT.NPASAPORTE) END IDENTIFICADOR, 
+    trim(CONINT.NOMBRES) NOMBRE, 
+    trim(CONINT.APELLIDOP) APELLIDO_PATERNO, 
+    trim(CONINT.APELLIDOM) APELLIDO_MATERNO
 FROM WFPROCESS WFP 
 LEFT OUTER JOIN GNASSOCFORMREG FORMREG ON FORMREG.CDASSOC=WFP.CDASSOCREG
 INNER JOIN DYNci CONINT ON FORMREG.OIDENTITYREG=CONINT.OID
